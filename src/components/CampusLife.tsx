@@ -10,21 +10,21 @@ export default function CampusLife({ lang }: { lang: 'ar' | 'fr' | 'en' }) {
       
       <div className="max-w-5xl mx-auto space-y-6">
         
-        {/* الفيديو مع أزرار التحكم */}
-        <div className="w-full">
+        {/* الفيديو المعدل */}
+        <div className="w-full bg-black rounded-2xl overflow-hidden shadow-md">
           <video 
             controls 
-            className="w-full rounded-2xl shadow-md object-cover max-h-[500px]"
+            className="w-full max-h-[500px] object-contain mx-auto" // هنا التغيير
           >
-            <source src="/hero-video.mp4" type="video/mp4" />
+            <source src="/videos/vid1.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
 
-        {/* الصور */}
+        {/* الصور - باش يخدمو الصور لي حطيتي فمجلد images */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <img src="/classroom.jpg" alt="Classroom" className="w-full h-60 object-cover rounded-2xl" />
-          <img src="/aviation.jpg" alt="Aviation" className="w-full h-60 object-cover rounded-2xl" />
+          <img src="/images/i2.jpg" alt="Classroom" className="w-full h-60 object-cover rounded-2xl" />
+          <img src="/images/im3.jpg" alt="Aviation" className="w-full h-60 object-cover rounded-2xl" />
         </div>
       </div>
     </section>
