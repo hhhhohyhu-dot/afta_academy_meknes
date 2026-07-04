@@ -1,13 +1,20 @@
 "use client";
 
-export default function Footer() {
+// 1. تعريف النوع (Interface) باش يقبل الـ lang
+interface FooterProps {
+  lang: 'en' | 'ar';
+}
+
+export default function Footer({ lang }: FooterProps) {
   return (
     <footer className="bg-gray-50 pt-16 pb-8 border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* قسم التواصل */}
         <div className="text-center mb-12">
-          <h3 className="text-2xl font-bold text-blue-900 mb-8">Contact Us</h3>
+          <h3 className="text-2xl font-bold text-blue-900 mb-8">
+            {lang === 'en' ? "Contact Us" : "تواصل معنا"}
+          </h3>
           
           <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12">
             
@@ -41,7 +48,9 @@ export default function Footer() {
         {/* حقوق النشر */}
         <div className="border-t border-gray-200 pt-8 mt-8 text-center">
           <p className="text-gray-500 font-medium">
-            All rights reserved &copy; {new Date().getFullYear()} AFTA Academy
+            {lang === 'en' 
+              ? `All rights reserved © ${new Date().getFullYear()} AFTA Academy` 
+              : `جميع الحقوق محفوظة © ${new Date().getFullYear()} أكاديمية AFTA`}
           </p>
         </div>
         
