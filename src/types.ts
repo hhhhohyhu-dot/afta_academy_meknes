@@ -1,0 +1,1 @@
+export type LangType = 'ar' | 'fr' | 'en';
