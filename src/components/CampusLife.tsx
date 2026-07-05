@@ -1,31 +1,42 @@
+/** @jsxImportSource react */
 "use client";
 import React from 'react';
+import { motion } from 'framer-motion';
 
-export default function CampusLife({ lang }: { lang: 'ar' | 'fr' | 'en' }) {
+export default function CampusLife({ lang }: { lang: 'en' | 'ar' }) {
   return (
-    <section className="py-10 px-4 bg-white">
-      <h2 className="text-3xl font-bold text-center mb-8">
-        {lang === 'ar' ? 'حياة الأكاديمية' : 'Campus Life'}
-      </h2>
-      
-      <div className="max-w-5xl mx-auto space-y-6">
-        
-        {/* الفيديو المعدل */}
-        <div className="w-full bg-black rounded-2xl overflow-hidden shadow-md">
+    <section className="py-20 px-6 bg-slate-950">
+      <div className="max-w-6xl mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="relative rounded-[2rem] overflow-hidden shadow-2xl h-[500px] flex items-center"
+        >
+          {/* خلفية الفيديو */}
           <video 
-            controls 
-            className="w-full max-h-[500px] object-contain mx-auto" // هنا التغيير
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            className="absolute inset-0 w-full h-full object-cover"
           >
-            <source src="/videos/vid1.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
+            <source src="/videos/hero-video.mp4" type="video/mp4" />
           </video>
-        </div>
-
-        {/* الصور - باش يخدمو الصور لي حطيتي فمجلد images */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <img src="/images/i2.jpg" alt="Classroom" className="w-full h-60 object-cover rounded-2xl" />
-          <img src="/images/im3.jpg" alt="Aviation" className="w-full h-60 object-cover rounded-2xl" />
-        </div>
+          
+          {/* طبقة العتمة (Overlay) */}
+          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px]" />
+          
+          {/* المحتوى */}
+          <div className="relative z-10 p-10 md:p-16 text-white max-w-2xl">
+            <h2 className="text-4xl md:text-5xl font-black mb-6">
+              {lang === 'ar' ? 'الحياة داخل الأكاديمية' : 'Academy Life'}
+            </h2>
+            <p className="text-lg text-slate-200">
+              {lang === 'ar' ? 'تجربة تدريبية تحاكي الواقع لضمان أفضل تكوين.' : 'Experience real-world training environments.'}
+            </p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface NavbarProps {
   lang: 'en' | 'ar';
@@ -8,37 +9,101 @@ interface NavbarProps {
 }
 
 export default function Navbar({ lang, setLang }: NavbarProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const isAr = lang === 'ar';
+
+  const toggleLang = () => {
+    setLang(isAr ? 'en' : 'ar');
+  };
+
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-sm shadow-md py-4 px-6 md:px-12 flex justify-between items-center transition-all">
-      
-      {/* اسم الأكاديمية (اللوغو) */}
-      <Link href="/" className="text-2xl md:text-4xl font-extrabold tracking-tight">
-        <span className="text-blue-900">AFTA</span>{" "}
-        <span className="text-orange-500">Academy</span>
-      </Link>
-
-      {/* الأزرار (تغيير اللغة + التسجيل) */}
-      <div className="flex items-center gap-3 md:gap-6">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         
-        {/* زر تغيير اللغة */}
-        <button 
-          onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-          className="text-base md:text-lg font-bold text-slate-700 hover:text-blue-700 hover:bg-blue-50 px-4 py-2 rounded-lg border-2 border-slate-200 transition-all flex items-center gap-2"
-        >
-          {/* أيقونة صغيرة للغة */}
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          {lang === 'en' ? 'العربية' : 'English'}
-        </button>
-
-        {/* زر التسجيل (JOIN NOW) */}
-        <Link 
-          href="/register" 
-          className="bg-orange-500 hover:bg-orange-600 text-white text-base md:text-lg font-bold py-2 md:py-3 px-6 md:px-8 rounded-full shadow-lg hover:shadow-orange-500/30 transition-all transform hover:-translate-y-1"
-        >
-          {lang === 'en' ? 'JOIN NOW »' : '« سجل الآن'}
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 text-white font-black text-xl tracking-wider">
+          <span className="text-orange-500">AFTA</span> ACADEMY
         </Link>
 
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-8" dir={isAr ? "rtl" : "ltr"}>
+          <Link href="/" className="text-sm font-semibold text-slate-200 hover:text-orange-500 transition-colors">
+            {isAr ? "الرئيسية" : "Home"}
+          </Link>
+          <a href="#contact" className="text-sm font-semibold text-slate-200 hover:text-orange-500 transition-colors">
+            {isAr ? "اتصل بنا" : "Contact"}
+          </a>
+          
+          {/* Language Switcher Button (SVG Instead of Globe Icon) */}
+          <button 
+            onClick={toggleLang}
+            className="flex items-center gap-2 text-sm font-bold bg-slate-800 text-slate-200 px-4 py-2 rounded-xl hover:bg-slate-700 transition-all border border-slate-700"
+          >
+            <svg className="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
+            {isAr ? "English" : "العربية"}
+          </button>
+
+          {/* Register Button */}
+          <Link 
+            href="/register"
+            className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow-sm hover:shadow transition-all transform hover:-translate-y-0.5"
+          >
+            {isAr ? "سجل الآن" : "Register Now"}
+          </Link>
+        </div>
+
+        {/* Mobile Menu Button (SVG Instead of Menu/X Icons) */}
+        <button 
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden text-slate-200 hover:text-white p-2"
+        >
+          {isOpen ? (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+        </button>
       </div>
+
+      {/* Mobile Dropdown Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-slate-900 border-b border-slate-800 overflow-hidden"
+          >
+            <div className="px-6 py-6 flex flex-col gap-6" dir={isAr ? "rtl" : "ltr"}>
+              <Link href="/" onClick={() => setIsOpen(false)} className="text-lg font-medium text-slate-200">
+                {isAr ? "الرئيسية" : "Home"}
+              </Link>
+              <a href="#contact" onClick={() => setIsOpen(false)} className="text-lg font-medium text-slate-200">
+                {isAr ? "اتصل بنا" : "Contact"}
+              </a>
+              <button 
+                onClick={() => { toggleLang(); setIsOpen(false); }}
+                className="flex items-center justify-center gap-2 text-base font-bold bg-slate-800 text-slate-200 py-3 rounded-xl border border-slate-700"
+              >
+                {isAr ? "English" : "العربية"}
+              </button>
+              <Link 
+                href="/register"
+                onClick={() => setIsOpen(false)}
+                className="bg-orange-500 text-white text-center text-base font-bold py-3 rounded-xl shadow-md"
+              >
+                {isAr ? "سجل الآن" : "Register Now"}
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
